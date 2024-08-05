@@ -34,10 +34,10 @@ def cipher_text():
     print('desea cargar un archivo con el mensaje a cifrar? (y/n): ')
     option = input('> ').strip().lower()
     if option == 'y':
-        textPlain = load_cipher_text('data/plain.txt')
+        textPlain = load_cipher_text('data/plain.txt').strip().lower()
         print('Mensaje a cifrar => {}'.format(textPlain))
     else:
-        textPlain = input('Inserte el mensaje a encriptar: ')
+        textPlain = input('Inserte el mensaje a encriptar: ').strip().lower()
     shift = int(input('Inserte el desplazamiento: '))
     idioma = input('Inserte el idioma (es/en): ').lower()
     incluir_especiales = input('¿Incluir alphabet especiales? (y/n): ').strip().lower() == 'y'
