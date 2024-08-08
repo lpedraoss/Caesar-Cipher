@@ -19,7 +19,7 @@ class CaesarCipher:
         encrypt(text, shift): Encrypts the given text using the specified shift value.
         decrypt(encrypted_text, shift): Decrypts the given encrypted text using the specified shift value.
     """
-    def __init__(self, idioma='es', especial=False):
+    def __init__(self, idioma='es', especial=False,numbers=False):
         """
         Initializes the CaesarCipher object.
 
@@ -30,31 +30,16 @@ class CaesarCipher:
         Returns:
         None
         """
+        
         self.alphabet = None
-        self.alphabet_en = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9, 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17, 's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23, 'y': 24, 'z': 25}
-        self.alphabet_es = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7, 'i': 8, 'j': 9, 'k': 10, 'l': 11, 'm': 12, 'n': 13, 'ñ': 14, 'o': 15, 'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22, 'w': 23, 'x': 24, 'y': 25, 'z': 26}
-        self.especial_en = {
-            "!": 26, "@": 27, "#": 28, "$": 29, "%": 30, "^": 31, "&": 32, "*": 33,
-            "(": 34, ")": 35, "-": 36, "_": 37, "+": 38, "=": 39, "{": 40, "}": 41,
-            "[": 42, "]": 43, ":": 44, ";": 45, "'": 46, "\"": 47, "<": 48, ">": 49,
-            ",": 50, ".": 51, "/": 52, "\\": 53, "|": 54, "?": 55, "~": 56, "`": 57, " ": 58
-        }
-        self.especial_es = {
-            "¡": 27, "¿": 28, "!": 29, "?": 30, "@": 31, "#": 32, "$": 33, "%": 34, "&": 35,
-            "*": 36, "(": 37, ")": 38, "-": 39, "_": 40, "+": 41, "=": 42, "{": 43,
-            "}": 44, "[": 45, "]": 46, ":": 47, ";": 48, "'": 49, "\"": 50, "<": 51,
-            ">": 52, ",": 53, ".": 54, "/": 55, "\\": 56, "|": 57, "^": 58, "~": 59,
-            "`": 60, " ": 61
-        }
-        self.numbers_en = {
-            '0': 59, '1': 60, '2': 61, '3': 62, '4': 63, '5': 64, '6': 65, '7': 66, '8': 67, '9': 68
-        }
-        self.numbers_es = {
-            '0': 62, '1': 63, '2': 64, '3': 65, '4': 66, '5': 67, '6': 68, '7': 69, '8': 70, '9': 71
-        }
-        self.set_alphabet(idioma, especial)
+        self.alphabet_en = 'abcdefghijklmnopqrstuvwxyz'
+        self.alphabet_es = 'abcdefghijklmnñopqrstuvwxyz'
+        self.especial_en = "!@#$%^&*()-_+={}[]:;'\"<>,./\\|?~` "
+        self.especial_es = "¡¿!?@#$%&*()-_+={}[]:;'\"<>,./\\|^~` "
+        self.alphanumeric = '0123456789'
+        self.set_alphabet(idioma, especial,numbers)
 
-    def set_alphabet(self, idioma, especial):
+    def set_alphabet(self, idioma, especial,numbers=False):
         """
         Sets the alphabet based on the specified language and special character flag.
 
@@ -68,18 +53,21 @@ class CaesarCipher:
         if idioma == 'en':
             self.alphabet = self.alphabet_en
             if especial:
-                self.alphabet.update(self.especial_en)
-                self.alphabet.update(self.numbers_en)
+                self.alphabet += self.especial_en
+            if numbers:
+                self.alphabet += self.alphanumeric
         elif idioma == 'es':
             self.alphabet = self.alphabet_es
             if especial:
-                self.alphabet.update(self.especial_es)
-                self.alphabet.update(self.numbers_es)
+                self.alphabet += self.especial_es
+            if numbers:
+                self.alphabet += self.alphanumeric
         else:
             self.alphabet = self.alphabet_es
-            if especial:
-                self.alphabet.update(self.especial_es)
-                self.alphabet.update(self.numbers_es)
+            
+        self.alphabet = {char: i for i, char in enumerate(self.alphabet)}
+
+
         self.modulus = len(self.alphabet)
         self.indices = {v: k for k, v in self.alphabet.items()}
 
