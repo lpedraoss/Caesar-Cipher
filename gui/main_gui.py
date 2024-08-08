@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import PhotoImage
 from core.caesar_cipher import CaesarCipher
 
 def load_txt(filename):
@@ -48,35 +49,56 @@ def main_GUI():
     root = tk.Tk()
     root.title("Cifrado César")
 
+    # Cargar la imagen de fondo
+    background_image = PhotoImage(file="assets/background.png")
+
+    # Crear un Canvas y colocar la imagen de fondo
+    canvas = tk.Canvas(root, width=background_image.width(), height=background_image.height())
+    canvas.pack(fill="both", expand=True)
+    canvas.create_image(0, 0, image=background_image, anchor="nw")
+
     # Variables
     action_var = tk.StringVar(value='cipher')
     load_file_var = tk.BooleanVar()
     alphanumeric_var = tk.BooleanVar()
     incluir_especiales_var = tk.BooleanVar()
 
+    # Estilo oscuro
+    dark_bg = "#2e2e2e"
+    dark_fg = "#ffffff"
+    entry_bg = "#3e3e3e"
+    entry_fg = "#ffffff"
+
     # Widgets
-    tk.Label(root, text="Seleccione una opción:").pack()
-    tk.Radiobutton(root, text="Cifrar texto", variable=action_var, value='cipher').pack()
-    tk.Radiobutton(root, text="Descifrar texto", variable=action_var, value='decrypt').pack()
+    canvas.create_rectangle(50, 10, 250, 90, fill=dark_bg, outline=dark_bg)
+    canvas.create_text(150, 20, text="Seleccione una opción:", fill=dark_fg)
+    canvas.create_window(150, 50, window=tk.Radiobutton(root, text="Cifrar texto", variable=action_var, value='cipher', bg=dark_bg, fg=dark_fg, selectcolor=dark_bg))
+    canvas.create_window(150, 80, window=tk.Radiobutton(root, text="Descifrar texto", variable=action_var, value='decrypt', bg=dark_bg, fg=dark_fg, selectcolor=dark_bg))
 
-    tk.Checkbutton(root, text="Cargar archivo", variable=load_file_var, command=toggle_text_input).pack()
+    canvas.create_rectangle(50, 100, 250, 130, fill=dark_bg, outline=dark_bg)
+    canvas.create_window(150, 110, window=tk.Checkbutton(root, text="Cargar archivo", variable=load_file_var, command=toggle_text_input, bg=dark_bg, fg=dark_fg, selectcolor=dark_bg))
 
-    tk.Label(root, text="Texto:").pack()
-    text_entry = tk.Entry(root)
-    text_entry.pack()
+    canvas.create_rectangle(50, 130, 250, 170, fill=dark_bg, outline=dark_bg)
+    canvas.create_text(150, 140, text="Texto:", fill=dark_fg)
+    text_entry = tk.Entry(root, bg=entry_bg, fg=entry_fg)
+    canvas.create_window(150, 160, window=text_entry)
 
-    tk.Label(root, text="Desplazamiento:").pack()
-    shift_entry = tk.Entry(root)
-    shift_entry.pack()
+    canvas.create_rectangle(50, 180, 250, 220, fill=dark_bg, outline=dark_bg)
+    canvas.create_text(150, 190, text="Desplazamiento:", fill=dark_fg)
+    shift_entry = tk.Entry(root, bg=entry_bg, fg=entry_fg)
+    canvas.create_window(150, 210, window=shift_entry)
 
-    tk.Label(root, text="Idioma (es/en):").pack()
-    idioma_entry = tk.Entry(root)
-    idioma_entry.pack()
+    canvas.create_rectangle(50, 230, 250, 270, fill=dark_bg, outline=dark_bg)
+    canvas.create_text(150, 240, text="Idioma (es/en):", fill=dark_fg)
+    idioma_entry = tk.Entry(root, bg=entry_bg, fg=entry_fg)
+    canvas.create_window(150, 260, window=idioma_entry)
 
-    tk.Checkbutton(root, text="¿Incluir números?", variable=alphanumeric_var).pack()
-    tk.Checkbutton(root, text="¿Incluir caracteres especiales?", variable=incluir_especiales_var).pack()
+    canvas.create_rectangle(50, 280, 250, 340, fill=dark_bg, outline=dark_bg)
+    canvas.create_window(150, 290, window=tk.Checkbutton(root, text="¿Incluir números?", variable=alphanumeric_var, bg=dark_bg, fg=dark_fg, selectcolor=dark_bg))
+    canvas.create_window(150, 320, window=tk.Checkbutton(root, text="¿Incluir caracteres especiales?", variable=incluir_especiales_var, bg=dark_bg, fg=dark_fg, selectcolor=dark_bg))
 
-    tk.Button(root, text="Ejecutar", command=execute_action).pack()
+    #canvas.create_rectangle(50, 350, 250, 380, fill=dark_bg, outline=dark_bg)
+    canvas.create_window(150, 350, window=tk.Button(root, text="Ejecutar", command=execute_action, bg=dark_bg, fg=dark_fg))
 
     # Iniciar el bucle principal de la interfaz
     root.mainloop()
